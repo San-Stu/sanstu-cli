@@ -1,6 +1,6 @@
 {
   "name": "@sanstu-cli/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "sanstu-cli core",
   "author": "吴家鑫 <wujiaxin@thejoyrun.com>",
   "homepage": "",
@@ -20,7 +20,7 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
-    "@sanstu-cli/utils": "^1.0.0"
+    "@sanstu-cli/utils": "^1.0.1"
   },
   "gitHead": "9f8ecfef641309d060f71455bbf6ac216f9c3161"
 }
