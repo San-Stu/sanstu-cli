@@ -19,6 +19,21 @@
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
+  "dependencies": {
+    "@sanstu-cli/get-npm-info": "file:../../utils/get-npm-info",
+    "@sanstu-cli/log": "file:../../utils/log",
+    "@sanstu-cli/init": "file:../../commands/init",
+    "colors": "^1.4.0",
+    "commander": "6.2.1",
+    "dotenv": "^16.0.3",
+    "import-local": "^3.1.0",
+    "minimist": "^1.2.7",
+    "npmlog": "^7.0.1",
+    "path-exists": "4.0.0",
+    "root-check": "1.0.0",
+    "semver": "^7.3.8",
+    "user-home": "^3.0.0"
+  },
   "gitHead": "208a2f0aa6dc069ed6226b543ae5d048db765f37",
   "publishConfig": {
     "access": "public"
