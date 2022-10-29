@@ -17,21 +17,14 @@ const commander = require('commander')
 const pkg = require('../package.json')
 const log = require('@sanstu-cli/log')
 const init = require('@sanstu-cli/init')
+const exec = require('@sanstu-cli/exec')
 const constant = require('./const')
-
-let args
 
 const program = new commander.Command()
 
 async function core() {
   try {
-    checkPkgVersion()
-    checkNodeVersion()
-    checkRoot()
-    checkUserHome()
-    // checkInputArgs()
-    checkEnv()
-    await checkGlobalUpdate()
+    await prepare()
     registerCommand()
   } catch (e) {
     log.error(e.message)
@@ -44,11 +37,12 @@ function registerCommand () {
     .usage('<command> [options]')
     .version(pkg.version)
     .option('-d, --debug', '是否开启调试模式', false)
+    .option('-tp, --targetPath <targetPath>', '是否指定本地调试文件路径', '')
 
   program
     .command('init [projectName]')
     .option('-f, --force', '是否强制初始化')
-    .action(init)
+    .action(exec)
 
   // debug模式
   program.on('option:debug', function () {
@@ -58,6 +52,10 @@ function registerCommand () {
       process.env.LOG_LEVEL = 'info'
     }
     log.level = process.env.LOG_LEVEL
+  })
+  // 指定targetPath
+  program.on('option:targetPath', function () {
+    process.env.CLI_TARGET_PATH = program.targetPath
   })
   // 未知命令监听
   program.on('command:*', function (obj) {
@@ -74,6 +72,15 @@ function registerCommand () {
     program.outputHelp()
     console.log()
   }
+}
+
+async function prepare () {
+  checkPkgVersion()
+  checkNodeVersion()
+  checkRoot()
+  checkUserHome()
+  checkEnv()
+  await checkGlobalUpdate()
 }
 
 async function checkGlobalUpdate () {
@@ -100,7 +107,6 @@ function checkEnv () {
     })
   }
   createDefaultConfig()
-  log.verbose('环境变量', process.env.CLI_HOME_PATH)
 }
 
 function createDefaultConfig () {
@@ -113,22 +119,6 @@ function createDefaultConfig () {
     cliConfig['cliHome'] = path.join(userHome, constant.DEFAULT_CLI_HOME)
   }
   process.env.CLI_HOME_PATH = cliConfig.cliHome
-}
-
-function checkInputArgs () {
-  // 获取命令参数
-  const minimist = require('minimist')
-  args = minimist(process.argv.slice(2))
-  checkArgs()
-}
-
-function checkArgs () {
-  if (args.debug) {
-    process.env.LOG_LEVEL = 'verbose'
-  } else {
-    process.env.LOG_LEVEL = 'info'
-  }
-  log.level = process.env.LOG_LEVEL
 }
 
 function checkUserHome () {
